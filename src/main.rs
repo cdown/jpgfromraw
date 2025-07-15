@@ -213,8 +213,12 @@ async fn write_jpeg(
 /// the output directory.
 async fn process_file(entry_path: &Path, out_dir: &Path, relative_path: &Path) -> Result<()> {
     let in_file = platform::open_raw(entry_path).await?;
-    let raw_buf = platform::mmap_raw(in_file)?;
-    let jpeg_info = find_largest_embedded_jpeg(&raw_buf)?;
+    let raw_buf = Arc::new(platform::mmap_raw(in_file)?);
+
+    let raw_buf_clone = raw_buf.clone();
+    let jpeg_info =
+        tokio::task::spawn_blocking(move || find_largest_embedded_jpeg(&raw_buf_clone)).await??;
+
     let jpeg_buf = extract_jpeg(&raw_buf, &jpeg_info)?;
     let mut output_file = out_dir.join(relative_path);
     output_file.set_extension("jpg");
