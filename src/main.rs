@@ -121,16 +121,15 @@ fn find_largest_embedded_jpeg(raw_buf: &[u8]) -> Result<EmbeddedJpegInfo> {
                 ORIENTATION_TAG => cur_orientation = Some(read_u16(&entry[8..10])),
                 _ => {}
             }
+        }
 
-            if let (Some(offset), Some(length)) = (cur_offset, cur_length) {
-                if length > largest_jpeg.length {
-                    largest_jpeg = EmbeddedJpegInfo {
-                        offset,
-                        length,
-                        orientation: cur_orientation,
-                    };
-                }
-                break;
+        if let (Some(offset), Some(length)) = (cur_offset, cur_length) {
+            if length > largest_jpeg.length {
+                largest_jpeg = EmbeddedJpegInfo {
+                    offset,
+                    length,
+                    orientation: cur_orientation,
+                };
             }
         }
 
