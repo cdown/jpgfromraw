@@ -12,20 +12,20 @@ license = "MIT"
 rust-version = "1.74"
 
 [dependencies]
-anyhow = "1.0.95"
+anyhow = "1.0.98"
 byteorder = "1.5.0"
-indicatif = "0.17.9"
-memmap2 = "0.9.5"
+indicatif = "0.18.0"
+memmap2 = "0.9.7"
 
 [target.'cfg(windows)'.dependencies]
-windows = { version = "0.60.0", features = ["Win32_Storage_FileSystem", "Win32_System_Memory", "Win32_System_Threading"]}
+windows = { version = "0.61.3", features = ["Win32_Storage_FileSystem", "Win32_System_Memory", "Win32_System_Threading"]}
 
 [dependencies.clap]
-version = "4.5.26"
+version = "4.5.41"
 features = ["std", "derive", "help"]
 default-features = false
 
 [dependencies.tokio]
-version = "1.43.0"
+version = "1.46.1"
 features = ["fs", "io-util", "macros", "rt-multi-thread", "sync"]
 default-features = false
