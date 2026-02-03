@@ -26,6 +26,6 @@ features = ["std", "derive", "help"]
 default-features = false
 
 [dependencies.tokio]
-version = "1.43.0"
+version = "1.43.1"
 features = ["fs", "io-util", "macros", "rt-multi-thread", "sync"]
 default-features = false
