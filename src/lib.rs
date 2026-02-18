@@ -168,12 +168,12 @@ fn extract_jpeg<'raw>(raw_buf: &'raw Mmap, jpeg: &'raw EmbeddedJpegInfo) -> Resu
 /// The embedded JPEG comes with no EXIF data. While most of it is outside of the scope of this
 /// application, it's pretty vexing to have the wrong orientation, so copy that over.
 #[rustfmt::skip]
-const fn get_header_bytes(orientation: u16) -> [u8; 34] {
+const fn get_header_bytes(orientation: u16) -> [u8; 38] {
     let orientation_bytes = orientation.to_le_bytes();
     [
         0xff, 0xd8, // SOI
         0xff, 0xe1, // APP1
-        0x00, 0x1e, // 30 bytes including this length
+        0x00, 0x22, // 34 bytes including this length
         0x45, 0x78, 0x69, 0x66, 0x00, 0x00, // Exif\0\0
         0x49, 0x49, 0x2A, 0x00, // TIFF LE
         0x08, 0x00, 0x00, 0x00, // Offset to IFD
@@ -181,8 +181,8 @@ const fn get_header_bytes(orientation: u16) -> [u8; 34] {
         0x12, 0x01, // Tag for orientation
         0x03, 0x00, // Type: SHORT
         0x01, 0x00, 0x00, 0x00, // Count: 1
-        orientation_bytes[0], orientation_bytes[1], // Orientation
-        0x00, 0x00, // Next IFD
+        orientation_bytes[0], orientation_bytes[1], 0x00, 0x00, // Orientation value
+        0x00, 0x00, 0x00, 0x00, // Next IFD offset: none
     ]
 }
 
