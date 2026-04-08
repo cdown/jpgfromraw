@@ -297,6 +297,7 @@ async fn process_directory(
             .progress_chars("##-"),
     );
 
+    ensure!(transfers > 0, "transfers must be at least 1");
     let semaphore = Arc::new(Semaphore::new(transfers));
     let mut tasks = Vec::with_capacity(entries.len());
 

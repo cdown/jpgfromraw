@@ -15,8 +15,8 @@ struct Args {
     output_dir: PathBuf,
 
     /// How many files to process at once
-    #[arg(short, long, default_value_t = 8)]
-    transfers: usize,
+    #[arg(short, long, default_value_t = 8, value_parser = clap::value_parser!(u64).range(1..))]
+    transfers: u64,
 
     /// Look for this extension in addition to the default list.
     ///
@@ -31,7 +31,7 @@ async fn main() -> Result<()> {
     let args = Args::parse();
 
     let config = ExtractionConfig::new(args.input_dir, args.output_dir)
-        .with_transfers(args.transfers)
+        .with_transfers(args.transfers as usize)
         .with_extension(args.extension);
 
     extract_directory(config).await
