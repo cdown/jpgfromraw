@@ -67,8 +67,13 @@ fn find_largest_embedded_jpeg_impl<B: ByteOrder>(raw_buf: &[u8]) -> Result<Embed
 
     let mut next_ifd_offset = B::read_u32(&raw_buf[4..8]).try_into()?;
     let mut largest_jpeg = EmbeddedJpegInfo::default();
+    let mut visited_offsets = HashSet::new();
 
     while next_ifd_offset != 0 {
+        ensure!(
+            visited_offsets.insert(next_ifd_offset),
+            "IFD offset cycle detected"
+        );
         ensure!(next_ifd_offset + 2 <= raw_buf.len(), "Invalid IFD offset");
 
         let cursor = &raw_buf[next_ifd_offset..];
