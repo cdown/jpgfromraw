@@ -155,6 +155,7 @@ fn find_largest_embedded_jpeg(raw_buf: &[u8]) -> Result<EmbeddedJpegInfo> {
         largest_jpeg.offset + largest_jpeg.length <= raw_buf.len(),
         "JPEG data exceeds file size"
     );
+    ensure!(largest_jpeg.length >= 2, "JPEG data too short");
 
     Ok(largest_jpeg)
 }
