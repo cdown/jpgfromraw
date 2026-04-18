@@ -266,7 +266,20 @@ async fn process_directory(
     ]
     .iter()
     .flat_map(|&ext| [OsString::from(ext), OsString::from(ext.to_uppercase())])
-    .chain(ext.into_iter())
+    .chain(ext.into_iter().flat_map(|e| {
+        let mut variants = vec![e.clone()];
+        if let Some(s) = e.to_str() {
+            let lower = OsString::from(s.to_lowercase());
+            let upper = OsString::from(s.to_uppercase());
+            if lower != e {
+                variants.push(lower);
+            }
+            if upper != e {
+                variants.push(upper);
+            }
+        }
+        variants
+    }))
     .collect::<HashSet<_>>();
 
     let mut entries = Vec::new();
