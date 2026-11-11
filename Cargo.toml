@@ -1,7 +1,7 @@
 [package]
 name = "jpgfromraw"
 edition = "2021"
-version = "0.7.0"
+version = "0.8.0"
 authors = ["Chris Down <chris@chrisdown.name>"]
 description = "A very fast embedded JPEG extractor from RAW files."
 repository = "https://github.com/cdown/jpgfromraw"
